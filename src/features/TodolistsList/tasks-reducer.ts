@@ -30,6 +30,9 @@ const slice = createSlice({
     setTasks: (state, action: PayloadAction<{ tasks: Array<TaskType>, todolistId: string }>) => {
       state[action.payload.todolistId] = action.payload.tasks
     },
+    clearTasksData: (state, action) => {
+      return {}
+    }
   },
   extraReducers: builder => {
     builder.addCase(todolistActions.addTodolist, (state, action) => {
@@ -42,6 +45,9 @@ const slice = createSlice({
         action.payload.todolists.forEach(tl => {
           state[tl.id] = []
         })
+      })
+      .addCase(todolistActions.clearTodosData, (state, action) => {
+        return {}
       })
   }
 })
