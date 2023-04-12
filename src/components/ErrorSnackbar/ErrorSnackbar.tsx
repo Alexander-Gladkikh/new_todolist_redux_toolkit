@@ -1,7 +1,7 @@
 import React from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {AppRootStateType} from 'app/store'
-import {appAction} from '../../app/app-reducer'
+import {appAction} from 'app/app-reducer'
 import { AlertProps, Snackbar } from '@mui/material'
 import MuiAlert from '@mui/material/Alert';
 
