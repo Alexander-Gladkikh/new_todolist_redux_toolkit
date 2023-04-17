@@ -124,4 +124,10 @@ export type UpdateTaskArgType = {
     todolistId: string
 }
 
+export const ResultCode = {
+    Success: 0,
+    Error: 1,
+    Captcha: 10
+} as const
+
 export type AddTaskArgType = { title: string, todolistId: string}

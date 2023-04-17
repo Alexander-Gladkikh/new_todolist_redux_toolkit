@@ -19,7 +19,7 @@ import {
 	Typography
 } from '@mui/material';
 import { Menu } from '@mui/icons-material'
-import {useAppDispatch} from "hooks/useAppDispatch";
+import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {selectIsInitialized, selectStatus} from "app/app.selectors";
 import {selectIsLoggedIn} from "features/Login/auth.selector";
 
