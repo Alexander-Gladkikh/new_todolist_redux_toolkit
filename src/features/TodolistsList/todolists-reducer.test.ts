@@ -3,8 +3,8 @@ import {
     todolistActions, TodolistDomainType, todolistReducer
 } from './todolists-reducer'
 import {v1} from 'uuid'
-import {TodolistType} from 'common/api/todolists-api'
 import {RequestStatusType} from 'app/app-reducer'
+import {TodolistType} from "features/TodolistsList/todolist-api";
 
 let todolistId1: string
 let todolistId2: string
