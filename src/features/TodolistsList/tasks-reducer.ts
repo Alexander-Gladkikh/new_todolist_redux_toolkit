@@ -1,4 +1,4 @@
-import {todolistActions} from './todolists-reducer'
+import {todolistActions, todosThunks} from './todolists-reducer'
 import {AppThunk} from 'app/store'
 import {appAction} from 'app/app-reducer'
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
@@ -23,7 +23,7 @@ const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: string }
       const tasks = res.data.items
       dispatch(appAction.setAppStatus({status: 'succeeded'}))
       return {tasks, todolistId}
-    } catch (error: any) {
+    } catch (error) {
       handleServerNetworkError(error, dispatch)
       return rejectWithValue(null)
     }
@@ -138,6 +138,11 @@ const slice = createSlice({
           tasks[index] = {...tasks[index], ...action.payload.domainModel}
         }
       })
+      .addCase(todosThunks.fetchTodolists.fulfilled, (state, action) => {
+        action.payload.forEach((tl) => {
+          state[tl.id] = []
+        })
+      })
       .addCase(removeTask.fulfilled, (state, action) => {
         const tasks = state[action.payload.todolistId]
         const index = tasks.findIndex(t => t.id === action.payload.taskId)
@@ -149,11 +154,11 @@ const slice = createSlice({
       .addCase(todolistActions.removeTodoList, (state, action) => {
         delete state[action.payload.id]
       })
-      .addCase(todolistActions.setTodolists, (state, action) => {
-        action.payload.todolists.forEach(tl => {
-          state[tl.id] = []
-        })
-      })
+      // .addCase(todolistActions.setTodolists, (state, action) => {
+      //   action.payload.todolists.forEach(tl => {
+      //     state[tl.id] = []
+      //   })
+      // })
       .addCase(todolistActions.clearTodosData, (state, action) => {
         return {}
       })
