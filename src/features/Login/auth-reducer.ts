@@ -4,6 +4,7 @@ import {AppThunk} from "app/store";
 import {todolistActions} from "features/TodolistsList/todolists-reducer";
 import {handleServerAppError, handleServerNetworkError} from "common/utils";
 import {authAPI, LoginParamsType} from "features/Login/auth-api";
+import {clearTasksAndTodolists} from "common/actions/common.actions";
 
 const initialState = {
     isLoggedIn: false
@@ -46,8 +47,8 @@ export const logoutTC = ():  AppThunk => dispatch => {
         .then(res => {
             if (res.data.resultCode === 0) {
               dispatch(authActions.setIsLoggedIn({ isLoggedIn: false}))
+              dispatch(clearTasksAndTodolists())
               dispatch(appAction.setAppStatus({status: 'succeeded'}))
-              dispatch(todolistActions.clearTodosData({}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
