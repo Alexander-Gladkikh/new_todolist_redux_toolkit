@@ -53,7 +53,6 @@ export const initializeApp = createAppAsyncThunk<{isLoggedIn: boolean}, void>
       return {isLoggedIn: true};
     }
     else {
-      handleServerAppError(res.data, dispatch)
       return rejectWithValue(null)
     }
 } catch (e) {
