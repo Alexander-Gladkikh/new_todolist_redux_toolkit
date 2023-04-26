@@ -20,6 +20,7 @@ import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {selectIsInitialized, selectStatus} from "app/app.selectors";
 import {selectIsLoggedIn} from "features/Login/auth.selector";
 import {authThunk} from "features/Login/auth-reducer";
+import {bindActionCreators} from "redux";
 
 type PropsType = {
 	demo?: boolean
@@ -33,7 +34,8 @@ function App({demo = false}: PropsType) {
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		dispatch(authThunk.initializeApp())
+		bindActionCreators(authThunk.initializeApp, dispatch)()
+		// dispatch(authThunk.initializeApp())
 	}, [])
 
 	const logoutHandler = useCallback(() => {
