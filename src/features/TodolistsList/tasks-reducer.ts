@@ -14,19 +14,18 @@ import {
 } from "features/TodolistsList/todolist-api";
 import {ResultCode, TaskPriorities, TaskStatuses} from "common/enums";
 import {clearTasksAndTodolists} from "common/actions/common.actions";
+import {thunkTryCatch} from "common/utils/thunk-try-catch";
 
 const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: string }, string>
 ('tasks/fetchTasks', async (todolistId, thunkAPI) => {
   const {dispatch, rejectWithValue} = thunkAPI
   try {
-    debugger
     dispatch(appAction.setAppStatus({status: 'loading'}))
     const res = await todolistsAPI.getTasks(todolistId)
     const tasks = res.data.items
     dispatch(appAction.setAppStatus({status: 'succeeded'}))
     return {tasks, todolistId}
   } catch (error) {
-    debugger
     handleServerNetworkError(error, dispatch)
     return rejectWithValue(null)
   }
@@ -35,21 +34,16 @@ const fetchTasks = createAppAsyncThunk<{ tasks: TaskType[], todolistId: string }
 const addTask = createAppAsyncThunk<{ task: TaskType }, AddTaskArgType>
 ('tasks/addTask', async (arg, thunkAPI) => {
   const {dispatch, rejectWithValue} = thunkAPI
-  try {
-    dispatch(appAction.setAppStatus({status: 'loading'}))
-    const res = await todolistsAPI.createTask(arg)
-    if (res.data.resultCode === ResultCode.Success) {
-      const task = res.data.data.item
-      dispatch(appAction.setAppStatus({status: 'succeeded'}))
-      return {task}
-    } else {
-      handleServerAppError(res.data, dispatch);
-      return rejectWithValue(null)
-    }
-  } catch (e) {
-    handleServerNetworkError(e, dispatch)
+return thunkTryCatch(thunkAPI, async  () => {
+  const res = await todolistsAPI.createTask(arg)
+  if (res.data.resultCode === ResultCode.Success) {
+    const task = res.data.data.item
+    return {task}
+  } else {
+    handleServerAppError(res.data, dispatch);
     return rejectWithValue(null)
   }
+})
 })
 
 export const removeTask = createAppAsyncThunk<RemoveTaskArgType, RemoveTaskArgType>('task/removeTask', async (arg, thunkAPI) => {
@@ -116,7 +110,6 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchTasks.fulfilled, (state, action) => {
-        debugger
         state[action.payload.todolistId] = action.payload.tasks
       })
       .addCase(addTask.fulfilled, (state, action) => {
