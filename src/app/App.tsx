@@ -35,10 +35,10 @@ function App({demo = false}: PropsType) {
 	const {initializeApp, logout} = useActions(authThunk)
 
 	useEffect(() => {
-		initializeApp()
+		initializeApp({})
 	}, [])
 
-	const logoutHandler = () => logout()
+	const logoutHandler = () => logout({})
 
 
 	if (!isInitialized) {

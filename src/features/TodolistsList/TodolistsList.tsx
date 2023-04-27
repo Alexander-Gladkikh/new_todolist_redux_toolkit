@@ -44,7 +44,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     if (demo || !isLoggedIn) {
       return;
     }
-    fetchTodolists()
+    fetchTodolists({})
   }, [])
 
   const removeTask = (taskId: string, todolistId: string) => removeTaskThunk({taskId, todolistId})

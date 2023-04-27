@@ -11,7 +11,6 @@ import {ResponseType} from "common/types";
 import {useActions} from "common/hooks/useActions";
 
 export const Login = () => {
-  const dispatch = useAppDispatch()
 
   const {login} = useActions(authThunk)
 
@@ -19,17 +18,19 @@ export const Login = () => {
 
   const formik = useFormik({
     validate: (values) => {
-      // if (!values.email) {
-      //   return {
-      //     email: 'Email is required'
-      //   }
-      // }
-      // if (!values.password) {
-      //   return {
-      //     password: 'Password is required'
-      //   }
-      // }
+      const errors: Partial<Omit<LoginParamsType, 'captcha'>> = {}
+      if (!values.email) {
+        errors.email = 'Email is required'
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address'
+      }
+      if (!values.password) {
+       errors.password = 'Required'
+      } else if (values.password.length < 3) {
+        errors.password = 'Must be 3 characters or more'
+      }
 
+      return errors
     },
     initialValues: {
       email: '',
@@ -37,7 +38,7 @@ export const Login = () => {
       rememberMe: false
     },
     onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
-      dispatch(login(values))
+      login(values)
         .unwrap()
         .catch((reason: ResponseType) => {
           const {fieldsErrors} = reason
