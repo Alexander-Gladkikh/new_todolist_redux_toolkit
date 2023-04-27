@@ -8,9 +8,12 @@ import {selectIsLoggedIn} from "features/Login/auth.selector";
 import {authThunk} from "features/Login/auth-reducer";
 import {LoginParamsType} from "features/Login/auth-api";
 import {ResponseType} from "common/types";
+import {useActions} from "common/hooks/useActions";
 
 export const Login = () => {
   const dispatch = useAppDispatch()
+
+  const {login} = useActions(authThunk)
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
@@ -34,7 +37,7 @@ export const Login = () => {
       rememberMe: false
     },
     onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
-      dispatch(authThunk.login(values))
+      dispatch(login(values))
         .unwrap()
         .catch((reason: ResponseType) => {
           const {fieldsErrors} = reason

@@ -21,6 +21,7 @@ import {selectIsInitialized, selectStatus} from "app/app.selectors";
 import {selectIsLoggedIn} from "features/Login/auth.selector";
 import {authThunk} from "features/Login/auth-reducer";
 import {bindActionCreators} from "redux";
+import {useActions} from "common/hooks/useActions";
 
 type PropsType = {
 	demo?: boolean
@@ -31,16 +32,14 @@ function App({demo = false}: PropsType) {
 	const isInitialized = useSelector(selectIsInitialized)
 	const isLoggedIn = useSelector(selectIsLoggedIn)
 
-	const dispatch = useAppDispatch()
+	const {initializeApp, logout} = useActions(authThunk)
 
 	useEffect(() => {
-		bindActionCreators(authThunk.initializeApp, dispatch)()
-		// dispatch(authThunk.initializeApp())
+		initializeApp()
 	}, [])
 
-	const logoutHandler = useCallback(() => {
-		dispatch(authThunk.logout())
-	}, [])
+	const logoutHandler = () => logout()
+
 
 	if (!isInitialized) {
 		return <div
