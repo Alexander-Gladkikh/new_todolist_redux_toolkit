@@ -1,21 +1,8 @@
-import {UpdateDomainTaskModelType} from "features/TodolistsList/tasks-reducer";
 import {TaskPriorities, TaskStatuses} from "common/enums";
-import { instance } from "common/api";
-import { ResponseType } from 'common/types'
+import {instance} from "common/api";
+import {ResponseType} from 'common/types'
 
-export const todolistsAPI = {
-  getTodolists() {
-    return instance.get<TodolistType[]>('todo-lists');
-  },
-  createTodolist(title: string) {
-    return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title: title});
-  },
-  deleteTodolist(id: string) {
-    return instance.delete<ResponseType>(`todo-lists/${id}`);
-  },
-  updateTodolist(arg: UpdateTodolistTitleArgType) {
-    return instance.put<ResponseType>(`todo-lists/${arg.id}`, {title: arg.title});
-  },
+export const taskAPI = {
   getTasks(todolistId: string) {
     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`);
   },
@@ -30,12 +17,6 @@ export const todolistsAPI = {
   }
 }
 
-export type TodolistType = {
-  id: string
-  title: string
-  addedDate: string
-  order: number
-}
 export type TaskType = {
   description: string
   title: string
@@ -61,15 +42,6 @@ type GetTasksResponse = {
   totalCount: number
   items: TaskType[]
 }
-export type UpdateTaskArgType = {
-  taskId: string
-  domainModel: UpdateDomainTaskModelType
-  todolistId: string
-}
+
 export type AddTaskArgType = { title: string, todolistId: string }
 export type RemoveTaskArgType = { todolistId: string, taskId: string }
-
-export type UpdateTodolistTitleArgType = {
-  id: string
-  title: string
-}

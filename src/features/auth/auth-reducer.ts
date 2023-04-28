@@ -1,7 +1,7 @@
 import {appAction} from 'app/app-reducer'
 import {createSlice} from "@reduxjs/toolkit";
 import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
-import {authAPI, LoginParamsType} from "features/Login/auth-api";
+import {authAPI, LoginParamsType} from "features/auth/auth-api";
 import {clearTasksAndTodolists} from "common/actions/common.actions";
 import {ResultCode} from "common/enums";
 import {thunkTryCatch} from "common/utils/thunk-try-catch";

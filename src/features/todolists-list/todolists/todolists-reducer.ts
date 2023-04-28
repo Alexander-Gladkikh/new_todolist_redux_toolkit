@@ -2,7 +2,7 @@ import {appAction, RequestStatusType} from 'app/app-reducer'
 import {AppThunk} from 'app/store';
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {handleServerNetworkError} from "common/utils/handle-server-network-error";
-import {todolistsAPI, TodolistType, UpdateTodolistTitleArgType} from "features/TodolistsList/todolist-api";
+import {todolistsAPI, TodolistType, UpdateTodolistTitleArgType} from "features/todolists-list/todolists/todolist-api";
 import {createAppAsyncThunk, handleServerAppError} from "common/utils";
 import {ResultCode} from "common/enums";
 import {clearTasksAndTodolists} from "common/actions/common.actions";

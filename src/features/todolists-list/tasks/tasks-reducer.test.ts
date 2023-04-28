@@ -1,6 +1,6 @@
-import {removeTask, tasksReducer, TasksStateType, taskThunk,} from './tasks-reducer'
+import {removeTask, tasksReducer, TasksStateType, taskThunk,} from 'features/todolists-list/tasks/tasks-reducer'
 
-import {todolistActions, todolistsThunks} from './todolists-reducer'
+import {todolistActions, todolistsThunks} from 'features/todolists-list/todolists/todolists-reducer'
 import {TaskPriorities, TaskStatuses} from "common/enums";
 
 

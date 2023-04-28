@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect} from 'react'
 import './App.css'
-import {TodolistsList} from 'features/TodolistsList/TodolistsList'
+import {TodolistsList} from 'features/todolists-list/TodolistsList'
 import {ErrorSnackbar} from 'components/ErrorSnackbar/ErrorSnackbar'
 import {useSelector} from 'react-redux'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import {Login} from 'features/Login/Login'
+import {Login} from 'features/auth/login/Login'
 import {
 	AppBar,
 	Button,
@@ -18,8 +18,8 @@ import {
 import {Menu} from '@mui/icons-material'
 import {useAppDispatch} from "common/hooks/useAppDispatch";
 import {selectIsInitialized, selectStatus} from "app/app.selectors";
-import {selectIsLoggedIn} from "features/Login/auth.selector";
-import {authThunk} from "features/Login/auth-reducer";
+import {selectIsLoggedIn} from "features/auth/auth.selector";
+import {authThunk} from "features/auth/auth-reducer";
 import {bindActionCreators} from "redux";
 import {useActions} from "common/hooks/useActions";
 

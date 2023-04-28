@@ -1,6 +1,6 @@
 import {Dispatch} from 'redux'
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authAPI} from "features/Login/auth-api";
+import {authAPI} from "features/auth/auth-api";
 import {createAppAsyncThunk, handleServerNetworkError} from "common/utils";
 
 

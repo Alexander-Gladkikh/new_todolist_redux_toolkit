@@ -4,9 +4,9 @@ import {useSelector} from 'react-redux'
 import {Navigate} from 'react-router-dom'
 import {useAppDispatch} from 'common/hooks/useAppDispatch';
 import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField} from '@mui/material'
-import {selectIsLoggedIn} from "features/Login/auth.selector";
-import {authThunk} from "features/Login/auth-reducer";
-import {LoginParamsType} from "features/Login/auth-api";
+import {selectIsLoggedIn} from "features/auth/auth.selector";
+import {authThunk} from "features/auth/auth-reducer";
+import {LoginParamsType} from "features/auth/auth-api";
 import {ResponseType} from "common/types";
 import {useActions} from "common/hooks/useActions";
 
