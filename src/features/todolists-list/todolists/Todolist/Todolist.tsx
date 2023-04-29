@@ -1,7 +1,7 @@
 import React, {FC, memo, useCallback, useEffect} from 'react'
 import {AddItemForm} from 'components/AddItemForm/AddItemForm'
 import {EditableSpan} from 'components/EditableSpan/EditableSpan'
-import {Task} from 'features/todolists-list/todolists/Todolist/Task/Task'
+import {Task} from 'features/todolists-list/todolists/Todolist/Tasks/Task/Task'
 import {
     FilterValuesType, todolistActions,
     TodolistDomainType,
@@ -13,6 +13,8 @@ import {TaskType} from "features/todolists-list/todolists/todolist-api";
 import {TaskStatuses} from "common/enums";
 import {taskThunk} from "features/todolists-list/tasks/tasks-reducer";
 import {useActions} from "common/hooks/useActions";
+import {FilterTasksButtons} from "features/todolists-list/todolists/Todolist/FilterTasksButtons/FilterTasksButtons";
+import {Tasks} from "features/todolists-list/todolists/Todolist/Tasks/Tasks";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -25,9 +27,6 @@ export const Todolist: FC<PropsType> = memo(({demo = false, todolist, tasks}) =>
 
     const {fetchTasks, addTask} = useActions(taskThunk)
     const {removeTodolist, changeTodolistTitle} = useActions(todolistsThunks)
-    const {changeTodolistFilter} = useActions(todolistActions)
-
-
 
     useEffect(() => {
         fetchTasks(todolist.id)
@@ -44,20 +43,6 @@ export const Todolist: FC<PropsType> = memo(({demo = false, todolist, tasks}) =>
         changeTodolistTitle({id: todolist.id, title})
     }
 
-    const onAllClickHandler = () => changeTodolistFilter({ filter: 'all', id: todolist.id })
-    const onActiveClickHandler = () => changeTodolistFilter({ filter: 'active', id: todolist.id})
-    const onCompletedClickHandler = () => changeTodolistFilter({ filter: 'completed', id: todolist.id})
-
-
-    let tasksForTodolist = tasks
-
-    if (todolist.filter === 'active') {
-        tasksForTodolist = tasks.filter(t => t.status === TaskStatuses.New)
-    }
-    if (todolist.filter === 'completed') {
-        tasksForTodolist = tasks.filter(t => t.status === TaskStatuses.Completed)
-    }
-
     return <div>
         <h3><EditableSpan value={todolist.title} onChange={changeTodolistTitleHandler}/>
             <IconButton onClick={removeTodolistHandler} disabled={todolist.entityStatus === 'loading'}>
@@ -65,26 +50,9 @@ export const Todolist: FC<PropsType> = memo(({demo = false, todolist, tasks}) =>
             </IconButton>
         </h3>
         <AddItemForm addItem={addTaskCallback} disabled={todolist.entityStatus === 'loading'}/>
-        <div>
-            {
-                tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={todolist.id}
-                />)
-            }
-        </div>
+        <Tasks todolist={todolist} tasks={tasks}/>
         <div style={{paddingTop: '10px'}}>
-            <Button variant={todolist.filter === 'all' ? 'outlined' : 'text'}
-                    onClick={onAllClickHandler}
-                    color={'inherit'}
-            >All
-            </Button>
-            <Button variant={todolist.filter === 'active' ? 'outlined' : 'text'}
-                    onClick={onActiveClickHandler}
-                    color={'primary'}>Active
-            </Button>
-            <Button variant={todolist.filter === 'completed' ? 'outlined' : 'text'}
-                    onClick={onCompletedClickHandler}
-                    color={'secondary'}>Completed
-            </Button>
+            <FilterTasksButtons todolist={todolist}/>
         </div>
     </div>
 })
