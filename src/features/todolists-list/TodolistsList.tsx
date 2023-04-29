@@ -21,12 +21,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const tasks = useSelector(selectorTasks)
   const isLoggedIn = useSelector(selectIsLoggedIn)
 
-  const {
-    fetchTodolists,
-    removeTodolist: removeTodolistThunk,
-    addTodolist: addTodolistThunk,
-    changeTodolistTitle: changeTodolistTitleThunk
-  } = useActions(todolistsThunks)
+  const { fetchTodolists, addTodolist: addTodolistThunk} = useActions(todolistsThunks)
 
 
   const {changeTodolistFilter} = useActions(todolistActions)
@@ -40,11 +35,11 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
 
 
-  const changeFilter = (value: FilterValuesType, todolistId: string) => changeTodolistFilter({id: todolistId, filter: value})
-
-  const removeTodolist = (id: string) => removeTodolistThunk(id)
-
-  const changeTodolistTitle = (id: string, title: string) => changeTodolistTitleThunk({id, title})
+  // const changeFilter = (value: FilterValuesType, todolistId: string) => changeTodolistFilter({id: todolistId, filter: value})
+  //
+  // const removeTodolist = (id: string) => removeTodolistThunk(id)
+  //
+  // const changeTodolistTitle = (id: string, title: string) => changeTodolistTitleThunk({id, title})
 
   const addTodolist = (title: string) => addTodolistThunk(title)
 
@@ -66,9 +61,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
               <Todolist
                 todolist={tl}
                 tasks={allTodolistTasks}
-                changeFilter={changeFilter}
-                removeTodolist={removeTodolist}
-                changeTodolistTitle={changeTodolistTitle}
                 demo={demo}
               />
             </Paper>
