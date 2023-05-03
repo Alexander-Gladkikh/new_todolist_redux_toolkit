@@ -15,6 +15,7 @@ import {taskThunk} from "features/todolists-list/tasks/tasks-reducer";
 import {useActions} from "common/hooks/useActions";
 import {FilterTasksButtons} from "features/todolists-list/todolists/Todolist/FilterTasksButtons/FilterTasksButtons";
 import {Tasks} from "features/todolists-list/todolists/Todolist/Tasks/Tasks";
+import {TodolistTitle} from "features/todolists-list/todolists/Todolist/TodolistTitle/TodolistTitle";
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -26,7 +27,7 @@ type PropsType = {
 export const Todolist: FC<PropsType> = memo(({demo = false, todolist, tasks}) => {
 
     const {fetchTasks, addTask} = useActions(taskThunk)
-    const {removeTodolist, changeTodolistTitle} = useActions(todolistsThunks)
+
 
     useEffect(() => {
         fetchTasks(todolist.id)
@@ -36,19 +37,10 @@ export const Todolist: FC<PropsType> = memo(({demo = false, todolist, tasks}) =>
         addTask({ title, todolistId: todolist.id})
     }
 
-    const removeTodolistHandler = () => {
-        removeTodolist(todolist.id)
-    }
-    const changeTodolistTitleHandler = (title: string) => {
-        changeTodolistTitle({id: todolist.id, title})
-    }
+
 
     return <div>
-        <h3><EditableSpan value={todolist.title} onChange={changeTodolistTitleHandler}/>
-            <IconButton onClick={removeTodolistHandler} disabled={todolist.entityStatus === 'loading'}>
-                <Delete/>
-            </IconButton>
-        </h3>
+        <TodolistTitle todolist={todolist}/>
         <AddItemForm addItem={addTaskCallback} disabled={todolist.entityStatus === 'loading'}/>
         <Tasks todolist={todolist} tasks={tasks}/>
         <div style={{paddingTop: '10px'}}>
