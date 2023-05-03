@@ -23,9 +23,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
   const { fetchTodolists, addTodolist: addTodolistThunk} = useActions(todolistsThunks)
 
-
-  const {changeTodolistFilter} = useActions(todolistActions)
-
   useEffect(() => {
     if (demo || !isLoggedIn) {
       return;
@@ -33,15 +30,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     fetchTodolists({})
   }, [])
 
-
-
-  // const changeFilter = (value: FilterValuesType, todolistId: string) => changeTodolistFilter({id: todolistId, filter: value})
-  //
-  // const removeTodolist = (id: string) => removeTodolistThunk(id)
-  //
-  // const changeTodolistTitle = (id: string, title: string) => changeTodolistTitleThunk({id, title})
-
-  const addTodolist = (title: string) => addTodolistThunk(title)
+  const addTodolist = (title: string) => addTodolistThunk(title).unwrap()
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"}/>

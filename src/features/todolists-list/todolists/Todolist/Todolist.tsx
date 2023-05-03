@@ -34,7 +34,7 @@ export const Todolist: FC<PropsType> = memo(({demo = false, todolist, tasks}) =>
     }, [])
 
     const addTaskCallback = (title: string) => {
-        addTask({ title, todolistId: todolist.id})
+       return addTask({ title, todolistId: todolist.id}).unwrap()
     }
 
 

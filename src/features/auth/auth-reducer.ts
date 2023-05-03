@@ -1,41 +1,30 @@
 import {appAction} from 'app/app-reducer'
 import {createSlice} from "@reduxjs/toolkit";
-import {createAppAsyncThunk, handleServerAppError, handleServerNetworkError} from "common/utils";
+import {createAppAsyncThunk} from "common/utils";
 import {authAPI, LoginParamsType} from "features/auth/auth-api";
 import {clearTasksAndTodolists} from "common/actions/common.actions";
 import {ResultCode} from "common/enums";
-import {thunkTryCatch} from "common/utils/thunk-try-catch";
 
 export const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>
-('auth/login', async (arg, thunkAPI) => {
-  const {dispatch, rejectWithValue} = thunkAPI
-  return thunkTryCatch(thunkAPI, async () => {
+('auth/login', async (arg, {rejectWithValue}) => {
     const res = await authAPI.login(arg)
     if (res.data.resultCode === 0) {
-      dispatch(appAction.setAppStatus({status: 'succeeded'}))
       return {isLoggedIn: true}
     } else {
       const isShowAppError = !res.data.fieldsErrors.length
-      handleServerAppError(res.data, dispatch, isShowAppError)
-      return rejectWithValue(res.data)
+      return rejectWithValue({data: res.data, showGlobalError: isShowAppError})
     }
-  })
 })
 
 export const logout = createAppAsyncThunk<{isLoggedIn: false}, void>
-('auth/logout', async (_, thunkAPI) => {
-  const {dispatch, rejectWithValue} = thunkAPI
-  return thunkTryCatch(thunkAPI, async () => {
+('auth/logout', async (_, {dispatch, rejectWithValue}) => {
     const res = await authAPI.logout()
     if (res.data.resultCode === 0) {
       dispatch(clearTasksAndTodolists())
-      dispatch(appAction.setAppStatus({status: 'succeeded'}))
       return {isLoggedIn: false}
     } else {
-      handleServerAppError(res.data, dispatch)
-      return rejectWithValue(null)
+      return rejectWithValue({data: res.data, showGlobalError: true})
     }
-  })
 })
 
 export const initializeApp = createAppAsyncThunk<{isLoggedIn: boolean}, void>
@@ -47,13 +36,9 @@ export const initializeApp = createAppAsyncThunk<{isLoggedIn: boolean}, void>
       return {isLoggedIn: true};
     }
     else {
-      return rejectWithValue(null)
+      return rejectWithValue({data: res.data, showGlobalError: false})
     }
-} catch (e) {
-  handleServerNetworkError(e, dispatch)
-  return rejectWithValue(null)
-}
-finally {
+} finally {
     dispatch(appAction.setAppInitialized({isInitialized: true}));
   }
 })
